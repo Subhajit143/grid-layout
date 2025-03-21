@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* @layer components {
+  .single-series-value {
+    font-size: clamp(2rem, 10vw, 6rem);
+  }
+  .single-series-label {
+    font-size: clamp(1rem, 4vw, 2rem);
+  }
+  .multi-series-value {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+  }
+  .multi-series-label {
+    font-size: clamp(0.875rem, 2.5vw, 1.25rem);
+  }
+} */
