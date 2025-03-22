@@ -11,7 +11,6 @@ const multiSeriesData = [
   { label: "Users get", value: "7" },
   { label: "Visits", value: "5" },
   { label: "Engagement to there", value: "15" },
-
 ];
 
 // Resizable component
@@ -30,7 +29,7 @@ const ResizableComponent = ({ width, height, onResize, children }) => {
           position: "relative",
           backgroundColor: "#171B1F", // Dark background color
           borderRadius: "8px",
-          padding: "16px",
+          padding: "8px",
         }}
       >
         {children}
@@ -54,6 +53,8 @@ const MultiSeriesPanel = ({ data }) => {
     return `${baseSize * scaleFactor}px`;
   };
 
+  
+
   return (
     <ResizableComponent
       width={size.width}
@@ -63,7 +64,10 @@ const MultiSeriesPanel = ({ data }) => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", // Responsive grid
+          gridTemplateColumns: `repeat(auto-fit, minmax(${
+            // Dynamic minimum size based on panel width
+            `clamp(${size.width / 6}px, ${size.width / 4}px, 150px)`
+          }, 1fr))`,
           gap: "8px",
 
           height: "100%",
@@ -84,10 +88,9 @@ const MultiSeriesPanel = ({ data }) => {
             }}
           >
             <p style={{ fontSize: calculateFontSize(5) }}>{item.label}</p>
-            <p style={{ fontSize: calculateFontSize(28), fontWeight: "bold" }}>
+            <p style={{ fontSize: calculateFontSize(50), fontWeight: "bold" }}>
               {item.value}
             </p>
-            
           </div>
         ))}
       </div>
@@ -130,7 +133,7 @@ const SingleSeriesPanel = ({ data }) => {
             style={{
               backgroundColor: "#0F1317", // Dark background for inside panels
               borderRadius: "8px",
-              
+
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -142,7 +145,6 @@ const SingleSeriesPanel = ({ data }) => {
             <p style={{ fontSize: calculateFontSize(72), fontWeight: "bold" }}>
               {data[0].value}
             </p>
-            
           </div>
         )}
       </div>
@@ -152,18 +154,20 @@ const SingleSeriesPanel = ({ data }) => {
 const App = () => {
   return (
     <div className="p-4 h-full w-full bg-[#0F1317]">
-      
       <div className="w-full h-screen flex flex-col gap-10">
-     <div>
-     <h2 className="text-xl font-bold text-white mb-4">Multi Series Panel</h2>
-     <MultiSeriesPanel data={multiSeriesData} />
-     </div>
         <div>
-        <h2 className="text-xl font-bold text-white mb-4">Single Series Panel</h2>
-        <SingleSeriesPanel data={multiSeriesData}/>
+          <h2 className="text-xl font-bold text-white mb-4">
+            Multi Series Panel
+          </h2>
+          <MultiSeriesPanel data={multiSeriesData} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-white mb-4">
+            Single Series Panel
+          </h2>
+          <SingleSeriesPanel data={multiSeriesData} />
         </div>
       </div>
-      
     </div>
   );
 };
