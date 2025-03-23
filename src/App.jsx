@@ -99,7 +99,7 @@ const MultiSeriesPanel = ({ data }) => {
           <div
             key={index}
             style={{
-              backgroundColor: "#0F1317",
+              // backgroundColor: "#0F1317",
               borderRadius: "8px",
               display: "flex",
               flexDirection: "column",
@@ -155,7 +155,7 @@ const SingleSeriesPanel = ({ data }) => {
           <div
             key={0} 
             style={{
-              backgroundColor: "#0F1317", 
+              // backgroundColor: "#0F1317", 
               borderRadius: "8px",
               display: "flex",
               flexDirection: "column",
