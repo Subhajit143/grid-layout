@@ -5,33 +5,30 @@ import "react-resizable/css/styles.css";
 
 // Sample data
 const multiSeriesData = [
-  { label: "Sales during month", value: "31" },
-  { label: "Revenue after it", value: "4" },
+  { label: "Sales during month Revenue after it here it was fun to do this challenge ,after it here it was fun to do this after it here it was fun to do this", value: "31" },
+  { label: "Revenue after  it here it was fun t it", value: "43" },
   { label: "Profit value", value: "1" },
   { label: "Users get", value: "7" },
-  { label: "Visits", value: "5" },
-  { label: "Engagement to there", value: "3" },
-  { label: "Sales during month", value: "3" },
-  { label: "Revenue after it", value: "4" },
-  { label: "Profit value", value: "9" },
+  { label: "Visits  it here it was fun t", value: "5" },
+  { label: "Engagement", value: "3212" },
+  { label: "Sales during month", value: "31" },
+  { label: "Revenue after it here it was fun to do this challenge ,after it here it was fun to do this after it here it was fun to do this ", value: "43" },
+  { label: "Profit value if the get was not valuable", value: "1" },
   { label: "Users get", value: "7" },
+  { label: "Visits  it here it was fun t", value: "53477891234" },
+  { label: "Engagement", value: "3212" },
 ];
 
-// Resizable component
+// Resizable Component Wrapper
 const ResizableComponent = ({ width, height, onResize, children }) => {
   return (
-    <Resizable
-      width={width}
-      height={height}
-      onResize={onResize}
-      resizeHandles={["se"]} // Only show resize handle at the bottom-right corner
-    >
+    <Resizable width={width} height={height} onResize={onResize} resizeHandles={["se"]}>
       <div
         style={{
           width: `${width}px`,
           height: `${height}px`,
           position: "relative",
-          backgroundColor: "#171B1F", 
+          backgroundColor: "#171B1F",
           borderRadius: "8px",
           padding: "8px",
         }}
@@ -42,37 +39,34 @@ const ResizableComponent = ({ width, height, onResize, children }) => {
   );
 };
 
-// Multi-series panel
+// Calculate grid size based on panel dimensions
+const calculateGridSize = (panelWidth, panelHeight, itemCount) => {
+  const columns = Math.ceil(Math.sqrt(itemCount));
+  const rows = Math.ceil(itemCount / columns);
+
+  return {
+    itemWidth: panelWidth / columns,
+    itemHeight: panelHeight / rows,
+  };
+};
+
+// Calculate dynamic font size based on grid item dimensions
+const calculateDynamicFontSize = (itemWidth, itemHeight, textLength) => {
+  const baseSize = Math.min(itemWidth / textLength, itemHeight / 2);
+  return `${Math.max(baseSize,1)}px`; // Minimum size of 12px for readability
+};
+const calculateDynamicFontSizeLable = (itemWidth, itemHeight, textLength) => {
+    const baseSize = Math.min(itemWidth / textLength, itemHeight / 10);
+    return `${Math.max(baseSize,1)}px`; // Minimum size of 12px for readability
+  };
+// Multi-Series Panel Component
 const MultiSeriesPanel = ({ data }) => {
-  const [size, setSize] = useState({ width: 600, height: 300 }); // Initial size of the main component
+  const [size, setSize] = useState({ width: 600, height: 300 });
 
-  // Handle resize of the main component
-  const handleResize = (event, { size: newSize }) => {
-    // Prevent resizing if the new dimensions would cause overflow
-    const minElementWidth = newSize.width / 6;
-    const minElementHeight = newSize.height / 3; 
-    const minSize = Math.min(minElementWidth, minElementHeight); 
-    const numColumns = Math.ceil(data.length / Math.ceil(data.length / 6));
-    const numRows = Math.ceil(data.length / numColumns); 
-    const gridHeight = numRows * minSize; 
+  const handleResize = (event, { size: newSize }) => setSize(newSize);
 
-    // Check if the grid height exceeds the panel height
-    if (gridHeight > newSize.height) {
-      
-      return;
-    }
+  const { itemWidth, itemHeight } = calculateGridSize(size.width, size.height, data.length);
 
-    // Otherwise, update the dimensions
-    setSize(newSize);
-  };
-
-  
-  const calculateFontSize = (baseSize) => {
-    const scaleFactor = Math.min(size.width / 500, size.height / 250); // Scale based on initial size
-    return `${baseSize * scaleFactor}px`;
-  };
-
-  // Calculate the minimum size for grid elements
   const calculateMinSize = () => {
     const minWidth = size.width / 6; // Minimum width based on panel width
     const minHeight = size.height / 3; // Minimum height based on panel height
@@ -80,47 +74,47 @@ const MultiSeriesPanel = ({ data }) => {
   };
 
   return (
-    <ResizableComponent
-      width={size.width}
-      height={size.height}
-      onResize={handleResize}
-    >
+    <ResizableComponent width={size.width} height={size.height} onResize={handleResize}>
       <div
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(auto-fit, minmax(${calculateMinSize()}px, 1fr))`,
          
-          gap: "2px",
+          gap: "5px",
           height: "100%",
-          justifyContent: "center",
         }}
       >
-        {data.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              // backgroundColor: "#0F1317",
-              borderRadius: "8px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#FFFFFF", 
-              // aspectRatio: "1 / 1", // Enforce square shape
-              width: "100%", 
-              height: "auto", 
-            }}
-          >
-            <p style={{ fontSize: calculateFontSize(5) }}>{item.label}</p>
-            <p style={{ fontSize: calculateFontSize(70), fontWeight: "bold" }}>
-              {item.value}
-            </p>
-          </div>
-        ))}
+        {data.map((item, index) => {
+          const labelFontSize = calculateDynamicFontSizeLable(itemWidth, itemHeight, item.label.length);
+          const valueFontSize = calculateDynamicFontSize(itemWidth, itemHeight, item.value.length);
+
+          return (
+            <div
+              key={index}
+              style={{
+                borderRadius: "8px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#FFFFFF",
+                width: "100%",
+                height: "auto",
+                gap:"2px", 
+              }}
+            >
+              <p className=" flex bottom-20" style={{ fontSize: labelFontSize }}>{item.label}</p>
+              <p style={{ fontSize: valueFontSize, fontWeight: "bold" }}>{item.value}</p>
+            </div>
+          );
+        })}
       </div>
     </ResizableComponent>
   );
 };
+
+// App Component
+
 
 const SingleSeriesPanel = ({ data }) => {
   const [size, setSize] = useState({ width: 400, height: 400 }); 
@@ -147,7 +141,7 @@ const SingleSeriesPanel = ({ data }) => {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min-content, 1fr))", 
           // gridAutoRows: ,
-          gap: "8px",
+         
           height: "100%",
         }}
       >
@@ -183,15 +177,9 @@ const App = () => {
     <div className="p-4 h-full w-full bg-[#0F1317]">
       <div className="w-full h-screen flex flex-col gap-10">
         <div>
-          <h2 className="text-xl font-bold text-white mb-4">
-            Multi Series Panel
-          </h2>
+          <h2 className="text-xl font-bold text-white mb-4">Multi Series Panel</h2>
           <MultiSeriesPanel data={multiSeriesData} />
-        </div>
-        <div>
-          <h2 className="text-xl font-bold text-white mb-4">
-            Single Series Panel
-          </h2>
+          <h2 className="text-xl font-bold text-white mb-4">Single Series Panel</h2>
           <SingleSeriesPanel data={multiSeriesData} />
         </div>
       </div>
