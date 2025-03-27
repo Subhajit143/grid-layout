@@ -76,6 +76,7 @@ const MultiSeriesPanel = ({ data }) => {
     const minHeight = size.height / Math.ceil(multiSeriesData.length/4); // Minimum height based on panel height
     return Math.min(minWidth, minHeight); // Use the smaller value to ensure elements fit
   };
+  
 
   return (
     <ResizableComponent width={size.width} height={size.height} onResize={handleResize}>
