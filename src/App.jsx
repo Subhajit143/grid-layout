@@ -5,14 +5,14 @@ import "react-resizable/css/styles.css";
 
 // Sample data
 const multiSeriesData = [
-  { label: "Sales during month Revenue after it here it was fun to do this challenge ,after it here it was fun to do this after it here it was fun to do this", value: "31" },
+  { label: "Sales during month ", value: "31" },
   { label: "Revenue after  it here it was fun t it", value: "43" },
   { label: "Profit value", value: "1" },
   { label: "Users get", value: "7" },
   { label: "Visits  it here it was fun t", value: "5" },
   { label: "Engagement", value: "3212" },
   { label: "Sales during month", value: "31" },
-  { label: "Revenue after it here it was fun to do this challenge ,after it here it was fun to do this after it here it was fun to do this ", value: "43" },
+  { label: "Revenue after it here it was fun  was ", value: "43" },
   { label: "Profit value if the get was not valuable", value: "1" },
   { label: "Users get", value: "7" },
   { label: "Visits  it here it was fun t", value: "53477891234" },
@@ -53,11 +53,15 @@ const calculateGridSize = (panelWidth, panelHeight, itemCount) => {
 // Calculate dynamic font size based on grid item dimensions
 const calculateDynamicFontSize = (itemWidth, itemHeight, textLength) => {
   const baseSize = Math.min(itemWidth / textLength, itemHeight / 2);
-  return `${Math.max(baseSize,1)}px`; // Minimum size of 12px for readability
+  return `${Math.max(baseSize,1)}px`;
 };
+
+
+
+
 const calculateDynamicFontSizeLable = (itemWidth, itemHeight, textLength) => {
     const baseSize = Math.min(itemWidth / textLength, itemHeight / 10);
-    return `${Math.max(baseSize,1)}px`; // Minimum size of 12px for readability
+    return `${Math.max(baseSize* 1.2,1)}px`; 
   };
 // Multi-Series Panel Component
 const MultiSeriesPanel = ({ data }) => {
@@ -68,8 +72,8 @@ const MultiSeriesPanel = ({ data }) => {
   const { itemWidth, itemHeight } = calculateGridSize(size.width, size.height, data.length);
 
   const calculateMinSize = () => {
-    const minWidth = size.width / 6; // Minimum width based on panel width
-    const minHeight = size.height / 3; // Minimum height based on panel height
+    const minWidth = size.width / Math.ceil(multiSeriesData.length/2); // Minimum width based on panel width
+    const minHeight = size.height / Math.ceil(multiSeriesData.length/4); // Minimum height based on panel height
     return Math.min(minWidth, minHeight); // Use the smaller value to ensure elements fit
   };
 
@@ -103,7 +107,7 @@ const MultiSeriesPanel = ({ data }) => {
                 gap:"2px", 
               }}
             >
-              <p className=" flex bottom-20" style={{ fontSize: labelFontSize }}>{item.label}</p>
+              <p  style={{ fontSize: labelFontSize }}>{item.label}</p>
               <p style={{ fontSize: valueFontSize, fontWeight: "bold" }}>{item.value}</p>
             </div>
           );
@@ -113,64 +117,75 @@ const MultiSeriesPanel = ({ data }) => {
   );
 };
 
-// App Component
-
+const calculateDynamicFontSizeSingle = (itemWidth, itemHeight, textLength) => {
+  const baseSize = Math.min(itemWidth / textLength, itemHeight / 2);
+  return `${Math.max(baseSize * 1.5, 12)}px`; // Increase size by 1.5x and set a minimum of 12px
+};
 
 const SingleSeriesPanel = ({ data }) => {
-  const [size, setSize] = useState({ width: 400, height: 400 }); 
+  const [size, setSize] = useState({ width: 600, height: 300 });
 
- 
-  const handleResize = (event, { size }) => {
-    setSize({ width: size.width, height: size.height });
-  };
+  const handleResize = (event, { size: newSize }) => setSize(newSize);
 
-  
-  const calculateFontSize = (baseSize) => {
-    const scaleFactor = Math.min(size.width / 300, size.height / 150);
-    return `${baseSize * scaleFactor}px`;
+  const { itemWidth, itemHeight } = calculateGridSize(size.width, size.height, data.length);
+
+  const calculateMinSize = () => {
+    const minWidth = size.width / Math.ceil(multiSeriesData.length/2); // Minimum width based on panel width
+    const minHeight = size.height / Math.ceil(multiSeriesData.length/4); // Minimum height based on panel height
+    return Math.min(minWidth, minHeight); // Use the smaller value to ensure elements fit
   };
 
   return (
-    <ResizableComponent
-      width={size.width}
-      height={size.height}
-      onResize={handleResize}
-    >
+    <ResizableComponent width={size.width} height={size.height} onResize={handleResize}>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min-content, 1fr))", 
-          // gridAutoRows: ,
+          gridTemplateColumns: `repeat(auto-fit, minmax(${calculateMinSize()}px, 1fr))`,
          
+          gap: "5px",
           height: "100%",
         }}
       >
-        {data.length > 0 && ( 
-          <div
-            key={0} 
-            style={{
-              // backgroundColor: "#0F1317", 
-              borderRadius: "8px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#FFFFFF", 
-              
-              width: "100%", 
-              height: "auto", 
-            }}
-          >
-            <p style={{ fontSize: calculateFontSize(6) }}>{data[0].label}</p>
-            <p style={{ fontSize: calculateFontSize(90), fontWeight: "bold" }}>
-              {data[0].value}
-            </p>
-          </div>
-        )}
+        {data.length > 0 && (
+  <div
+    key={0}
+    style={{
+      borderRadius: "8px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      color: "#FFFFFF",
+      width: "100%",
+      height: "auto",
+      gap: "2px",
+    }}
+  >
+    <p
+      
+      style={{
+        fontSize: calculateDynamicFontSizeLable(itemWidth, itemHeight, data[0].label.length),
+      }}
+    >
+      {data[0].label}
+    </p>
+    <p
+      style={{
+        fontSize: calculateDynamicFontSizeSingle(itemWidth, itemHeight, data[0].value.length),
+        fontWeight: "bold",
+      }}
+    >
+      {data[0].value}
+    </p>
+  </div>
+)}
+
       </div>
     </ResizableComponent>
   );
 };
+
+
 
 const App = () => {
   return (
