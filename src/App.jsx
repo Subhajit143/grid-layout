@@ -15,7 +15,7 @@ const multiSeriesData = [
   { label: "Revenue after it here it was fun  was ", value: "43" },
   { label: "Profit value if the get was not valuable", value: "1" },
   { label: "Users get", value: "7" },
-  { label: "Visits  it here it was fun t", value: "53477891234" },
+  { label: "Visits  it here it was fun t", value: "5232344" },
   { label: "Engagement", value: "3212" },
 ];
 
@@ -52,11 +52,9 @@ const calculateGridSize = (panelWidth, panelHeight, itemCount) => {
 
 // Calculate dynamic font size based on grid item dimensions
 const calculateDynamicFontSize = (itemWidth, itemHeight, textLength) => {
-  const baseSize = Math.min(itemWidth / textLength, itemHeight / 2);
+  const baseSize = Math.min(itemWidth / textLength, itemHeight / 3);
   return `${Math.max(baseSize,1)}px`;
 };
-
-
 
 
 const calculateDynamicFontSizeLable = (itemWidth, itemHeight, textLength) => {
@@ -85,7 +83,7 @@ const MultiSeriesPanel = ({ data }) => {
           display: "grid",
           gridTemplateColumns: `repeat(auto-fit, minmax(${calculateMinSize()}px, 1fr))`,
          
-          gap: "5px",
+          gap: "10px",
           height: "100%",
         }}
       >
